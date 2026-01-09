@@ -4,21 +4,19 @@ dotenv.config(); // Load biến môi trường từ file .env
 
 import express from 'express';
 import { connectDB } from './infra/database/postgres';
-import { UserRepositoryImpl } from './data/repositories/UserRepositoryImpl';
-import { LoginUser } from './domain/usecases/LoginUser';
-import { AuthController } from './api/controllers/AuthController';
 import { createAuthRoutes } from './api/routes/authRoutes';
+import { createAdministrativeUnitRoutes } from './api/routes/administrativeUnitRoutes';
+
+// Import DI Modules
+import { AuthModule } from './core/di/modules/AuthModule';
+import { AdministrativeUnitModule } from './core/di/modules/AdministrativeUnitModule';
 
 const app = express();
 app.use(express.json());
 
-// Dependency Injection
-const userRepository = new UserRepositoryImpl();
-const loginUseCase = new LoginUser(userRepository);
-const authController = new AuthController(loginUseCase);
-
-// Routes
-app.use('/api/auth', createAuthRoutes(authController));
+// Routes - Clean and simple!
+app.use('/api/auth', createAuthRoutes(AuthModule.controller));
+app.use('/api/administrative-units', createAdministrativeUnitRoutes(AdministrativeUnitModule.controller));
 
 // Start server
 const PORT = process.env.PORT || 3000;

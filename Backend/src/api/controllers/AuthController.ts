@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
-import { LoginUser } from '../../domain/usecases/LoginUser';
+import { LoginUser } from '../../domain/usecases/auth/LoginUser';
+import { RegisterUser } from '../../domain/usecases/auth/RegisterUser';
 
 export class AuthController {
-    constructor(private loginUser: LoginUser) { }
+    constructor(
+        private loginUseCase: LoginUser,
+        private registerUseCase: RegisterUser
+    ) { }
 
     async login(req: Request, res: Response) {
         try {
@@ -14,7 +18,7 @@ export class AuthController {
                 });
             }
 
-            const result = await this.loginUser.execute({ username, password });
+            const result = await this.loginUseCase.execute({ username, password });
 
             return res.json({
                 message: 'Login successful',
@@ -26,6 +30,23 @@ export class AuthController {
             });
         } catch (error: any) {
             return res.status(401).json({ error: error.message });
+        }
+    }
+
+    async register(req: Request, res: Response) {
+        try {
+            const user = await this.registerUseCase.execute(req.body);
+
+            return res.status(201).json({
+                message: 'User registered successfully',
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
+        } catch (error: any) {
+            return res.status(400).json({ error: error.message });
         }
     }
 }

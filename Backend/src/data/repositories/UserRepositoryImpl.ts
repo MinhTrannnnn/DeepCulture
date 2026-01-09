@@ -11,12 +11,12 @@ export class UserRepositoryImpl implements UserRepository {
 
         if (!userModel) return null;
 
-        return new User(
-            userModel.id,
-            userModel.username,
-            userModel.email,
-            userModel.password
-        );
+        return {
+            id: userModel.id,
+            username: userModel.username,
+            email: userModel.email,
+            password: userModel.password
+        };
     }
 
     async findByEmail(email: string): Promise<User | null> {
@@ -24,12 +24,12 @@ export class UserRepositoryImpl implements UserRepository {
 
         if (!userModel) return null;
 
-        return new User(
-            userModel.id,
-            userModel.username,
-            userModel.email,
-            userModel.password
-        );
+        return {
+            id: userModel.id,
+            username: userModel.username,
+            email: userModel.email,
+            password: userModel.password
+        };
     }
 
     async create(user: User): Promise<User> {
@@ -41,11 +41,11 @@ export class UserRepositoryImpl implements UserRepository {
 
         const savedUser = await this.repository.save(userModel);
 
-        return new User(
-            savedUser.id,
-            savedUser.username,
-            savedUser.email,
-            savedUser.password
-        );
+        return {
+            id: savedUser.id,
+            username: savedUser.username,
+            email: savedUser.email,
+            password: savedUser.password
+        };
     }
 }

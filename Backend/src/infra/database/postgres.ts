@@ -3,6 +3,11 @@ import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import { UserModel } from '../../data/models/UserModel';
 import { AdministrativeUnitModel } from '../../data/models/AdministrativeUnitModel';
+import { DeityModel } from '../../data/models/DeityModel';
+import { PlaceModel } from '../../data/models/PlaceModel';
+import { PlaceDeityModel } from '../../data/models/PlaceDeityModel';
+import { DynastyModel } from '../../data/models/DynastyModel';
+import { AreaModel } from '../../data/models/AreaModel';
 
 // Load environment variables
 dotenv.config();
@@ -18,7 +23,12 @@ export const AppDataSource = new DataSource({
     logging: process.env.NODE_ENV === 'development',
     entities: [
         UserModel,
-        AdministrativeUnitModel
+        AdministrativeUnitModel,
+        DeityModel,
+        PlaceModel,
+        PlaceDeityModel,
+        DynastyModel,
+        AreaModel
     ],
     migrations: ['src/infra/database/migrations/*.ts'],
     migrationsTableName: 'migrations_history'

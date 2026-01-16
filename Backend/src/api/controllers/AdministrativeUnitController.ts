@@ -25,7 +25,7 @@ export class AdministrativeUnitController {
 
     async getById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const unit = await this.getUseCase.execute(id);
             if (!unit) {
                 return res.status(404).json({ error: 'Not found' });
@@ -48,7 +48,7 @@ export class AdministrativeUnitController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const unit = await this.updateUseCase.execute(id, req.body);
             res.json(unit);
         } catch (error: any) {
@@ -58,7 +58,7 @@ export class AdministrativeUnitController {
 
     async delete(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.deleteUseCase.execute(id);
             res.status(204).send();
         } catch (error: any) {

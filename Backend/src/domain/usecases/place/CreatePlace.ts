@@ -3,41 +3,40 @@ import { PlaceRepository } from '../../repositories/PlaceRepository';
 
 export interface CreatePlaceDTO {
     name: string;
-    address: string;
-    administrativeUnitId: number;
-    latitude: number;
-    longitude: number;
-    description: string;
-    historicalSignificance: string;
-    visitingHours?: string;
-    entryFee?: number;
-    contactInfo?: string;
+    commonName?: string;
+    type?: string;
+    address?: string;
+    longitude?: number;
+    latitude?: number;
+    establishedYear?: number;
+    landArea?: number;
+    status?: string;
+    description?: string;
+    history?: string;
+    administrativeUnitId?: string;
 }
 
 export class CreatePlace {
     constructor(private repository: PlaceRepository) { }
 
     async execute(data: CreatePlaceDTO): Promise<Place> {
-        if (!data.name || !data.address || !data.administrativeUnitId) {
-            throw new Error('Name, address, and administrative unit are required');
+        if (!data.name) {
+            throw new Error('Name is required');
         }
 
-        const place: Place = {
-            id: 0,
+        return await this.repository.create({
             name: data.name,
+            commonName: data.commonName,
+            type: data.type,
             address: data.address,
-            administrativeUnitId: data.administrativeUnitId,
-            latitude: data.latitude,
             longitude: data.longitude,
+            latitude: data.latitude,
+            establishedYear: data.establishedYear,
+            landArea: data.landArea,
+            status: data.status,
             description: data.description,
-            historicalSignificance: data.historicalSignificance,
-            visitingHours: data.visitingHours || '',
-            entryFee: data.entryFee || 0,
-            contactInfo: data.contactInfo || '',
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        return await this.repository.create(place);
+            history: data.history,
+            administrativeUnitId: data.administrativeUnitId
+        });
     }
 }

@@ -1,15 +1,17 @@
 export interface Place {
-    id: number;
+    id: string;
     name: string;
-    address: string;
-    administrativeUnitId: number;
-    latitude: number;
-    longitude: number;
-    description: string;
-    historicalSignificance: string;
-    visitingHours: string;
-    entryFee: number;
-    contactInfo: string;
+    commonName?: string;
+    type?: string;
+    address?: string;
+    longitude?: number;
+    latitude?: number;
+    establishedYear?: number;
+    landArea?: number;
+    status?: string;
+    description?: string;
+    history?: string;
+    administrativeUnitId?: string;
     createdAt: Date;
     updatedAt: Date;
 }

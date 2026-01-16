@@ -1,20 +1,19 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('administrative_units')
-@Index(['name', 'level'], { unique: true })
 export class AdministrativeUnitModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
-    @Column({ length: 255 })
+    @Column({ type: 'text' })
     name!: string;
 
-    @Column({ length: 50 })
+    @Column({ type: 'text' })
     level!: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

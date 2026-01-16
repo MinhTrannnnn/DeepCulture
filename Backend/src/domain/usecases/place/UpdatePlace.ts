@@ -3,21 +3,23 @@ import { PlaceRepository } from '../../repositories/PlaceRepository';
 
 export interface UpdatePlaceDTO {
     name?: string;
+    commonName?: string;
+    type?: string;
     address?: string;
-    administrativeUnitId?: number;
-    latitude?: number;
     longitude?: number;
+    latitude?: number;
+    establishedYear?: number;
+    landArea?: number;
+    status?: string;
     description?: string;
-    historicalSignificance?: string;
-    visitingHours?: string;
-    entryFee?: number;
-    contactInfo?: string;
+    history?: string;
+    administrativeUnitId?: string;
 }
 
 export class UpdatePlace {
     constructor(private repository: PlaceRepository) { }
 
-    async execute(id: number, data: UpdatePlaceDTO): Promise<Place> {
+    async execute(id: string, data: UpdatePlaceDTO): Promise<Place> {
         return await this.repository.update(id, data);
     }
 }

@@ -1,0 +1,296 @@
+
+-- =========================
+-- 1. BASE TABLES 
+-- =========================
+
+-- Bảng Users
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    role TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Administrative_units
+CREATE TABLE administrative_units (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    level TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Deities
+CREATE TABLE deities (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    type TEXT,
+    origin TEXT,
+    legend TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Dynasty
+CREATE TABLE dynasty (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    start_year INTEGER,
+    end_year INTEGER,
+    description TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Persons
+CREATE TABLE persons (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    full_name TEXT NOT NULL,
+    other_name TEXT,
+    birth_year INTEGER,
+    death_year INTEGER,
+    hometown TEXT,
+    position TEXT,
+    field TEXT,
+    achievements TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Intangible_heritages
+CREATE TABLE intangible_heritages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    type TEXT,
+    origin TEXT,
+    description TEXT,
+    significance TEXT,
+    community TEXT,
+    region TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
+-- 2. TABLES CÓ FOREIGN KEY (CẤP 1 - CHỈ REFERENCE BASE TABLES)
+-- =========================
+
+-- Bảng Place (references administrative_units)
+CREATE TABLE place (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    common_name TEXT,
+    type TEXT,
+    address TEXT,
+    longitude DECIMAL(10, 7),
+    latitude DECIMAL(10, 7),
+    established_year INTEGER,
+    land_area INTEGER,
+    status TEXT,
+    description TEXT,
+    history TEXT,
+    administrative_unit_id UUID REFERENCES administrative_units(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
+-- 3. TABLES CÓ FOREIGN KEY (CẤP 2 - REFERENCE TABLES Ở CẤP 1)
+-- =========================
+
+-- Bảng Area (references place)
+CREATE TABLE area (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    area_type TEXT,
+    function TEXT,
+    description TEXT,
+    place_id UUID REFERENCES place(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
+-- 4. TABLES CÓ FOREIGN KEY (CẤP 3 - REFERENCE TABLES Ở CẤP 2)
+-- =========================
+
+-- Bảng Architectures (references area)
+CREATE TABLE architectures (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    type TEXT,
+    material TEXT,
+    technique TEXT,
+    pattern TEXT,
+    description TEXT,
+    image_url TEXT,
+    year INTEGER,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Artifacts (references area)
+CREATE TABLE artifacts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    weight DOUBLE PRECISION,
+    year INTEGER,
+    origin TEXT,
+    condition TEXT,
+    description TEXT,
+    symbolism TEXT,
+    area_id UUID REFERENCES area(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Han_nom_inscriptions (references area)
+CREATE TABLE han_nom_inscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    type TEXT,
+    location TEXT,
+    transcription TEXT,
+    translation TEXT,
+    image_url TEXT,
+    year INTEGER,
+    condition TEXT,
+    area_id UUID REFERENCES area(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
+-- 5. JUNCTION TABLES (MANY-TO-MANY)
+-- =========================
+
+-- Place - Deities (nhiều địa điểm thờ nhiều vị thần)
+CREATE TABLE place_deities (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    place_id UUID REFERENCES place(id) ON DELETE CASCADE,
+    deity_id UUID REFERENCES deities(id) ON DELETE CASCADE,
+    role TEXT,
+    worship_type TEXT,
+    significance_level TEXT,
+    notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(place_id, deity_id)
+);
+
+-- Place - Dynasty (địa điểm qua các triều đại)
+CREATE TABLE place_dynasty (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    place_id UUID REFERENCES place(id) ON DELETE CASCADE,
+    dynasty_id UUID REFERENCES dynasty(id) ON DELETE CASCADE,
+    role TEXT,
+    note TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(place_id, dynasty_id)
+);
+
+-- Place - Intangible Heritages (địa điểm liên quan di sản phi vật thể)
+CREATE TABLE place_intangible (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    place_id UUID REFERENCES place(id) ON DELETE CASCADE,
+    intangible_heritage_id UUID REFERENCES intangible_heritages(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(place_id, intangible_heritage_id)
+);
+
+-- Area - Architecture (khu vực có kiến trúc)
+CREATE TABLE area_architecture (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    area_id UUID REFERENCES area(id) ON DELETE CASCADE,
+    architecture_id UUID REFERENCES architectures(id) ON DELETE CASCADE,
+    position TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(area_id, architecture_id)
+);
+
+-- Person - Dynasty (nhân vật thuộc triều đại)
+CREATE TABLE person_dynasty (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    person_id UUID REFERENCES persons(id) ON DELETE CASCADE,
+    dynasty_id UUID REFERENCES dynasty(id) ON DELETE CASCADE,
+    role TEXT,
+    start_year INTEGER,
+    end_year INTEGER,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(person_id, dynasty_id)
+);
+
+-- =========================
+-- 6. POLYMORPHIC CONTENT TABLES
+-- =========================
+
+-- Bảng Media (hình ảnh, video cho nhiều entity)
+CREATE TABLE media (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    type TEXT,
+    url TEXT NOT NULL,
+    caption TEXT,
+    entity_type TEXT NOT NULL,
+    entity_id UUID NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Bảng Historical Documents (tài liệu lịch sử cho nhiều entity)
+CREATE TABLE historical_documents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    type TEXT,
+    language TEXT,
+    year INTEGER,
+    content TEXT,
+    summary TEXT,
+    entity_type TEXT NOT NULL,
+    entity_id UUID NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
+-- 7. INDEXES ĐỂ TỐI ƯU HIỆU SUẤT
+-- =========================
+
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_place_name ON place(name);
+CREATE INDEX idx_place_admin_unit ON place(administrative_unit_id);
+CREATE INDEX idx_area_place_id ON area(place_id);
+CREATE INDEX idx_area_type ON area(area_type);
+CREATE INDEX idx_artifacts_area_id ON artifacts(area_id);
+CREATE INDEX idx_han_nom_area_id ON han_nom_inscriptions(area_id);
+CREATE INDEX idx_deities_name ON deities(name);
+CREATE INDEX idx_deities_type ON deities(type);
+CREATE INDEX idx_dynasty_name ON dynasty(name);
+CREATE INDEX idx_persons_name ON persons(full_name);
+CREATE INDEX idx_media_entity ON media(entity_type, entity_id);
+CREATE INDEX idx_historical_docs_entity ON historical_documents(entity_type, entity_id);
+
+-- =========================
+-- 8. COMMENTS CHO CÁC BẢNG
+-- =========================
+
+COMMENT ON TABLE users IS 'Bảng quản lý người dùng hệ thống';
+COMMENT ON TABLE administrative_units IS 'Đơn vị hành chính (tỉnh, huyện, xã)';
+COMMENT ON TABLE place IS 'Địa điểm di tích lịch sử văn hóa';
+COMMENT ON TABLE area IS 'Khu vực trong địa điểm';
+COMMENT ON TABLE deities IS 'Các vị thần, thánh được thờ';
+COMMENT ON TABLE dynasty IS 'Các triều đại lịch sử Việt Nam';
+COMMENT ON TABLE persons IS 'Nhân vật lịch sử';
+COMMENT ON TABLE artifacts IS 'Hiện vật, đồ tạo tác';
+COMMENT ON TABLE architectures IS 'Kiến trúc, công trình';
+COMMENT ON TABLE han_nom_inscriptions IS 'Văn bia, hoành phi câu đối chữ Hán Nôm';
+COMMENT ON TABLE intangible_heritages IS 'Di sản văn hóa phi vật thể';
+COMMENT ON TABLE media IS 'Hình ảnh, video đa phương tiện';
+COMMENT ON TABLE historical_documents IS 'Tài liệu, văn bản lịch sử';

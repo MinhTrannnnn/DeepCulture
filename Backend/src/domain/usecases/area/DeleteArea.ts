@@ -3,7 +3,7 @@ import { AreaRepository } from '../../repositories/AreaRepository';
 export class DeleteArea {
     constructor(private repository: AreaRepository) { }
 
-    async execute(id: number): Promise<void> {
+    async execute(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 }

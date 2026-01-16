@@ -25,7 +25,7 @@ export class PlaceController {
 
     async getById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const place = await this.getUseCase.execute(id);
             if (!place) {
                 return res.status(404).json({ error: 'Not found' });
@@ -38,9 +38,7 @@ export class PlaceController {
 
     async list(req: Request, res: Response) {
         try {
-            const administrativeUnitId = req.query.administrativeUnitId
-                ? parseInt(req.query.administrativeUnitId as string)
-                : undefined;
+            const administrativeUnitId = req.query.administrativeUnitId as string | undefined;
             const places = await this.listUseCase.execute(administrativeUnitId);
             res.json(places);
         } catch (error: any) {
@@ -50,7 +48,7 @@ export class PlaceController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const place = await this.updateUseCase.execute(id, req.body);
             res.json(place);
         } catch (error: any) {
@@ -60,7 +58,7 @@ export class PlaceController {
 
     async delete(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.deleteUseCase.execute(id);
             res.status(204).send();
         } catch (error: any) {

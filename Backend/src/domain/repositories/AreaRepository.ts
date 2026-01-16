@@ -1,10 +1,10 @@
 import { Area } from '../entities/Area';
 
 export interface AreaRepository {
-    create(area: Area): Promise<Area>;
-    findById(id: number): Promise<Area | null>;
+    create(area: Omit<Area, 'id' | 'createdAt' | 'updatedAt'>): Promise<Area>;
+    findById(id: string): Promise<Area | null>;
     findAll(): Promise<Area[]>;
-    findByPlace(placeId: number): Promise<Area[]>;
-    update(id: number, data: Partial<Area>): Promise<Area>;
-    delete(id: number): Promise<void>;
+    findByPlace(placeId: string): Promise<Area[]>;
+    update(id: string, data: Partial<Area>): Promise<Area>;
+    delete(id: string): Promise<void>;
 }

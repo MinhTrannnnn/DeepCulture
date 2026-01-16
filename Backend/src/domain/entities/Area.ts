@@ -1,9 +1,10 @@
 export interface Area {
-    id: number;
+    id: string;
     name: string;
-    placeId: number;
-    areaType: string;
-    description: string;
+    areaType?: string;
+    function?: string;
+    description?: string;
+    placeId?: string;
     createdAt: Date;
     updatedAt: Date;
 }

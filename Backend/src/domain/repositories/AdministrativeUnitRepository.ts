@@ -1,9 +1,9 @@
 import { AdministrativeUnit } from '../entities/AdministrativeUnit';
 
 export interface AdministrativeUnitRepository {
-    create(unit: AdministrativeUnit): Promise<AdministrativeUnit>;
-    findById(id: number): Promise<AdministrativeUnit | null>;
+    create(unit: Omit<AdministrativeUnit, 'id' | 'createdAt' | 'updatedAt'>): Promise<AdministrativeUnit>;
+    findById(id: string): Promise<AdministrativeUnit | null>;
     findAll(level?: string): Promise<AdministrativeUnit[]>;
-    update(id: number, data: Partial<AdministrativeUnit>): Promise<AdministrativeUnit>;
-    delete(id: number): Promise<void>;
+    update(id: string, data: Partial<AdministrativeUnit>): Promise<AdministrativeUnit>;
+    delete(id: string): Promise<void>;
 }

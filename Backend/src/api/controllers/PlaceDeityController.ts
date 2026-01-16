@@ -16,7 +16,7 @@ export class PlaceDeityController {
 
     async addDeityToPlace(req: Request, res: Response) {
         try {
-            const placeId = parseInt(req.params.placeId);
+            const placeId = req.params.placeId;
             const relationship = await this.addDeityToPlaceUseCase.execute({
                 placeId,
                 ...req.body
@@ -29,8 +29,8 @@ export class PlaceDeityController {
 
     async removeDeityFromPlace(req: Request, res: Response) {
         try {
-            const placeId = parseInt(req.params.placeId);
-            const deityId = parseInt(req.params.deityId);
+            const placeId = req.params.placeId;
+            const deityId = req.params.deityId;
             await this.removeDeityFromPlaceUseCase.execute(placeId, deityId);
             res.status(204).send();
         } catch (error: any) {
@@ -40,7 +40,7 @@ export class PlaceDeityController {
 
     async getPlaceDeities(req: Request, res: Response) {
         try {
-            const placeId = parseInt(req.params.placeId);
+            const placeId = req.params.placeId;
             const deities = await this.getPlaceDeitiesUseCase.execute(placeId);
             res.json(deities);
         } catch (error: any) {
@@ -50,7 +50,7 @@ export class PlaceDeityController {
 
     async getDeityPlaces(req: Request, res: Response) {
         try {
-            const deityId = parseInt(req.params.deityId);
+            const deityId = req.params.deityId;
             const places = await this.getDeityPlacesUseCase.execute(deityId);
             res.json(places);
         } catch (error: any) {
@@ -60,8 +60,8 @@ export class PlaceDeityController {
 
     async updatePlaceDeity(req: Request, res: Response) {
         try {
-            const placeId = parseInt(req.params.placeId);
-            const deityId = parseInt(req.params.deityId);
+            const placeId = req.params.placeId;
+            const deityId = req.params.deityId;
             const relationship = await this.updatePlaceDeityUseCase.execute(placeId, deityId, req.body);
             res.json(relationship);
         } catch (error: any) {

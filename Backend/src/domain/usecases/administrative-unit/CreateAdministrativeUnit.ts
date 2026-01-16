@@ -10,24 +10,13 @@ export class CreateAdministrativeUnit {
     constructor(private repository: AdministrativeUnitRepository) { }
 
     async execute(data: CreateAdministrativeUnitDTO): Promise<AdministrativeUnit> {
-        // Validation
         if (!data.name || !data.level) {
             throw new Error('Name and level are required');
         }
 
-        if (!['province', 'district', 'commune'].includes(data.level)) {
-            throw new Error('Invalid level. Must be: province, district, or commune');
-        }
-
-        // Create entity
-        const unit: AdministrativeUnit = {
-            id: 0, // sẽ được DB auto-generate
+        return await this.repository.create({
             name: data.name,
-            level: data.level,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        return await this.repository.create(unit);
+            level: data.level
+        });
     }
 }

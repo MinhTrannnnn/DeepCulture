@@ -3,39 +3,41 @@ import { PlaceModel } from './PlaceModel';
 import { DeityModel } from './DeityModel';
 
 @Entity('place_deities')
-@Index(['place_id', 'deity_id'], { unique: true })
 @Index(['place_id'])
 @Index(['deity_id'])
 export class PlaceDeityModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
-    @Column({ name: 'place_id' })
-    place_id!: number;
+    @Column({ type: 'uuid' })
+    place_id!: string;
 
     @ManyToOne(() => PlaceModel)
     @JoinColumn({ name: 'place_id' })
     place!: PlaceModel;
 
-    @Column({ name: 'deity_id' })
-    deity_id!: number;
+    @Column({ type: 'uuid' })
+    deity_id!: string;
 
     @ManyToOne(() => DeityModel)
     @JoinColumn({ name: 'deity_id' })
     deity!: DeityModel;
 
-    @Column({ length: 100, name: 'worship_type' })
-    worship_type!: string;
-
-    @Column({ length: 50, name: 'significance_level' })
-    significance_level!: string;
+    @Column({ type: 'text', nullable: true })
+    role?: string;
 
     @Column({ type: 'text', nullable: true })
-    notes!: string;
+    worship_type?: string;
 
-    @CreateDateColumn()
+    @Column({ type: 'text', nullable: true })
+    significance_level?: string;
+
+    @Column({ type: 'text', nullable: true })
+    notes?: string;
+
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

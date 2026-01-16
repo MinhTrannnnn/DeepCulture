@@ -6,7 +6,7 @@ import { AdministrativeUnitRepository } from '../../domain/repositories/Administ
 export class AdministrativeUnitRepositoryImpl implements AdministrativeUnitRepository {
     private repository = AppDataSource.getRepository(AdministrativeUnitModel);
 
-    async create(unit: AdministrativeUnit): Promise<AdministrativeUnit> {
+    async create(unit: Omit<AdministrativeUnit, 'id' | 'createdAt' | 'updatedAt'>): Promise<AdministrativeUnit> {
         const model = this.repository.create({
             name: unit.name,
             level: unit.level
@@ -15,20 +15,18 @@ export class AdministrativeUnitRepositoryImpl implements AdministrativeUnitRepos
         return this.toEntity(saved);
     }
 
-    async findById(id: number): Promise<AdministrativeUnit | null> {
+    async findById(id: string): Promise<AdministrativeUnit | null> {
         const model = await this.repository.findOne({ where: { id } });
         return model ? this.toEntity(model) : null;
     }
 
     async findAll(level?: string): Promise<AdministrativeUnit[]> {
-        const query = level
-            ? { where: { level } }
-            : {};
+        const query = level ? { where: { level } } : {};
         const models = await this.repository.find(query);
         return models.map(m => this.toEntity(m));
     }
 
-    async update(id: number, data: Partial<AdministrativeUnit>): Promise<AdministrativeUnit> {
+    async update(id: string, data: Partial<AdministrativeUnit>): Promise<AdministrativeUnit> {
         await this.repository.update(id, {
             name: data.name,
             level: data.level
@@ -38,7 +36,7 @@ export class AdministrativeUnitRepositoryImpl implements AdministrativeUnitRepos
         return this.toEntity(updated);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 

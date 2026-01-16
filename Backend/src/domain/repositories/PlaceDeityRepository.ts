@@ -1,12 +1,12 @@
 import { PlaceDeity } from '../entities/PlaceDeity';
 
 export interface PlaceDeityRepository {
-    create(placeDeity: PlaceDeity): Promise<PlaceDeity>;
-    findById(id: number): Promise<PlaceDeity | null>;
-    findByPlace(placeId: number): Promise<PlaceDeity[]>;
-    findByDeity(deityId: number): Promise<PlaceDeity[]>;
-    findByPlaceAndDeity(placeId: number, deityId: number): Promise<PlaceDeity | null>;
-    update(id: number, data: Partial<PlaceDeity>): Promise<PlaceDeity>;
-    delete(id: number): Promise<void>;
-    deleteByPlaceAndDeity(placeId: number, deityId: number): Promise<void>;
+    create(placeDeity: Omit<PlaceDeity, 'id' | 'createdAt' | 'updatedAt'>): Promise<PlaceDeity>;
+    findById(id: string): Promise<PlaceDeity | null>;
+    findByPlace(placeId: string): Promise<PlaceDeity[]>;
+    findByDeity(deityId: string): Promise<PlaceDeity[]>;
+    findByPlaceAndDeity(placeId: string, deityId: string): Promise<PlaceDeity | null>;
+    update(id: string, data: Partial<PlaceDeity>): Promise<PlaceDeity>;
+    delete(id: string): Promise<void>;
+    deleteByPlaceAndDeity(placeId: string, deityId: string): Promise<void>;
 }

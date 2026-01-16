@@ -1,9 +1,9 @@
 import { Deity } from '../entities/Deity';
 
 export interface DeityRepository {
-    create(deity: Deity): Promise<Deity>;
-    findById(id: number): Promise<Deity | null>;
+    create(deity: Omit<Deity, 'id' | 'createdAt' | 'updatedAt'>): Promise<Deity>;
+    findById(id: string): Promise<Deity | null>;
     findAll(): Promise<Deity[]>;
-    update(id: number, data: Partial<Deity>): Promise<Deity>;
-    delete(id: number): Promise<void>;
+    update(id: string, data: Partial<Deity>): Promise<Deity>;
+    delete(id: string): Promise<void>;
 }

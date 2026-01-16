@@ -3,18 +3,17 @@ import { DynastyRepository } from '../../repositories/DynastyRepository';
 
 export interface CreateDynastyDTO {
     name: string;
-    startYear: number;
-    endYear?: number | null;
-    capital: string;
-    description: string;
+    startYear?: number;
+    endYear?: number;
+    description?: string;
 }
 
 export class CreateDynasty {
     constructor(private repository: DynastyRepository) { }
 
     async execute(data: CreateDynastyDTO): Promise<Dynasty> {
-        if (!data.name || !data.startYear || !data.capital) {
-            throw new Error('Name, start year, and capital are required');
+        if (!data.name) {
+            throw new Error('Name is required');
         }
 
         // Check if dynasty name already exists
@@ -23,17 +22,11 @@ export class CreateDynasty {
             throw new Error('Dynasty with this name already exists');
         }
 
-        const dynasty: Dynasty = {
-            id: 0,
+        return await this.repository.create({
             name: data.name,
             startYear: data.startYear,
-            endYear: data.endYear || null,
-            capital: data.capital,
-            description: data.description,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        return await this.repository.create(dynasty);
+            endYear: data.endYear,
+            description: data.description
+        });
     }
 }

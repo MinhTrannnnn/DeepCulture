@@ -6,10 +6,11 @@ import { PlaceDeityRepository } from '../../domain/repositories/PlaceDeityReposi
 export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
     private repository = AppDataSource.getRepository(PlaceDeityModel);
 
-    async create(placeDeity: PlaceDeity): Promise<PlaceDeity> {
+    async create(placeDeity: Omit<PlaceDeity, 'id' | 'createdAt' | 'updatedAt'>): Promise<PlaceDeity> {
         const model = this.repository.create({
             place_id: placeDeity.placeId,
             deity_id: placeDeity.deityId,
+            role: placeDeity.role,
             worship_type: placeDeity.worshipType,
             significance_level: placeDeity.significanceLevel,
             notes: placeDeity.notes
@@ -18,7 +19,7 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
         return this.toEntity(saved);
     }
 
-    async findById(id: number): Promise<PlaceDeity | null> {
+    async findById(id: string): Promise<PlaceDeity | null> {
         const model = await this.repository.findOne({
             where: { id },
             relations: ['place', 'deity']
@@ -26,7 +27,7 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
         return model ? this.toEntity(model) : null;
     }
 
-    async findByPlace(placeId: number): Promise<PlaceDeity[]> {
+    async findByPlace(placeId: string): Promise<PlaceDeity[]> {
         const models = await this.repository.find({
             where: { place_id: placeId },
             relations: ['deity']
@@ -34,7 +35,7 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
         return models.map(m => this.toEntity(m));
     }
 
-    async findByDeity(deityId: number): Promise<PlaceDeity[]> {
+    async findByDeity(deityId: string): Promise<PlaceDeity[]> {
         const models = await this.repository.find({
             where: { deity_id: deityId },
             relations: ['place']
@@ -42,15 +43,16 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
         return models.map(m => this.toEntity(m));
     }
 
-    async findByPlaceAndDeity(placeId: number, deityId: number): Promise<PlaceDeity | null> {
+    async findByPlaceAndDeity(placeId: string, deityId: string): Promise<PlaceDeity | null> {
         const model = await this.repository.findOne({
             where: { place_id: placeId, deity_id: deityId }
         });
         return model ? this.toEntity(model) : null;
     }
 
-    async update(id: number, data: Partial<PlaceDeity>): Promise<PlaceDeity> {
+    async update(id: string, data: Partial<PlaceDeity>): Promise<PlaceDeity> {
         await this.repository.update(id, {
+            role: data.role,
             worship_type: data.worshipType,
             significance_level: data.significanceLevel,
             notes: data.notes
@@ -60,11 +62,11 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
         return this.toEntity(updated);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 
-    async deleteByPlaceAndDeity(placeId: number, deityId: number): Promise<void> {
+    async deleteByPlaceAndDeity(placeId: string, deityId: string): Promise<void> {
         await this.repository.delete({ place_id: placeId, deity_id: deityId });
     }
 
@@ -73,6 +75,7 @@ export class PlaceDeityRepositoryImpl implements PlaceDeityRepository {
             id: model.id,
             placeId: model.place_id,
             deityId: model.deity_id,
+            role: model.role,
             worshipType: model.worship_type,
             significanceLevel: model.significance_level,
             notes: model.notes,

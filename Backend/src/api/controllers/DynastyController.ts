@@ -25,7 +25,7 @@ export class DynastyController {
 
     async getById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const dynasty = await this.getUseCase.execute(id);
             if (!dynasty) {
                 return res.status(404).json({ error: 'Not found' });
@@ -47,7 +47,7 @@ export class DynastyController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const dynasty = await this.updateUseCase.execute(id, req.body);
             res.json(dynasty);
         } catch (error: any) {
@@ -57,7 +57,7 @@ export class DynastyController {
 
     async delete(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.deleteUseCase.execute(id);
             res.status(204).send();
         } catch (error: any) {

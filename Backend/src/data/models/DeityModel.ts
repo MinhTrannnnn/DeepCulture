@@ -1,27 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('deities')
 @Index(['name'])
 @Index(['type'])
 export class DeityModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column({ length: 255 })
-    name!: string;
-
-    @Column({ length: 100 })
-    type!: string;
-
-    @Column({ length: 255 })
-    origin!: string;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: 'text' })
-    legend!: string;
+    name!: string;
 
-    @CreateDateColumn()
+    @Column({ type: 'text', nullable: true })
+    type?: string;
+
+    @Column({ type: 'text', nullable: true })
+    origin?: string;
+
+    @Column({ type: 'text', nullable: true })
+    legend?: string;
+
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

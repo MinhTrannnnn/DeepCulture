@@ -4,7 +4,7 @@ import { DynastyRepository } from '../../repositories/DynastyRepository';
 export class GetDynasty {
     constructor(private repository: DynastyRepository) { }
 
-    async execute(id: number): Promise<Dynasty | null> {
+    async execute(id: string): Promise<Dynasty | null> {
         return await this.repository.findById(id);
     }
 }

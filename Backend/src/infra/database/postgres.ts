@@ -8,17 +8,34 @@ import { PlaceModel } from '../../data/models/PlaceModel';
 import { PlaceDeityModel } from '../../data/models/PlaceDeityModel';
 import { DynastyModel } from '../../data/models/DynastyModel';
 import { AreaModel } from '../../data/models/AreaModel';
+import { PersonModel } from '../../data/models/PersonModel';
+import { IntangibleHeritageModel } from '../../data/models/IntangibleHeritageModel';
+import { ArchitectureModel } from '../../data/models/ArchitectureModel';
+import { ArtifactModel } from '../../data/models/ArtifactModel';
+import { HanNomInscriptionModel } from '../../data/models/HanNomInscriptionModel';
+import { PlaceDynastyModel } from '../../data/models/PlaceDynastyModel';
+import { PlaceIntangibleModel } from '../../data/models/PlaceIntangibleModel';
+import { AreaArchitectureModel } from '../../data/models/AreaArchitectureModel';
+import { PersonDynastyModel } from '../../data/models/PersonDynastyModel';
 
 // Load environment variables
 dotenv.config();
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || '5432'),
-    username: process.env.DB_USER,
-    password: String(process.env.DB_PASSWORD),
-    database: process.env.DB_NAME,
+    ...(process.env.DATABASE_URL
+        ? { url: process.env.DATABASE_URL }
+        : {
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT || '5432'),
+            username: process.env.DB_USER,
+            password: String(process.env.DB_PASSWORD),
+            database: process.env.DB_NAME,
+        }
+    ),
+    ssl: {
+        rejectUnauthorized: false
+    },
     synchronize: false,
     logging: process.env.NODE_ENV === 'development',
     entities: [
@@ -28,7 +45,16 @@ export const AppDataSource = new DataSource({
         PlaceModel,
         PlaceDeityModel,
         DynastyModel,
-        AreaModel
+        AreaModel,
+        PersonModel,
+        IntangibleHeritageModel,
+        ArchitectureModel,
+        ArtifactModel,
+        HanNomInscriptionModel,
+        PlaceDynastyModel,
+        PlaceIntangibleModel,
+        AreaArchitectureModel,
+        PersonDynastyModel
     ],
     migrations: ['src/infra/database/migrations/*.ts'],
     migrationsTableName: 'migrations_history'

@@ -25,7 +25,7 @@ export class AreaController {
 
     async getById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const area = await this.getUseCase.execute(id);
             if (!area) {
                 return res.status(404).json({ error: 'Not found' });
@@ -38,9 +38,7 @@ export class AreaController {
 
     async list(req: Request, res: Response) {
         try {
-            const placeId = req.query.placeId
-                ? parseInt(req.query.placeId as string)
-                : undefined;
+            const placeId = req.query.placeId as string | undefined;
             const areas = await this.listUseCase.execute(placeId);
             res.json(areas);
         } catch (error: any) {
@@ -50,7 +48,7 @@ export class AreaController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const area = await this.updateUseCase.execute(id, req.body);
             res.json(area);
         } catch (error: any) {
@@ -60,7 +58,7 @@ export class AreaController {
 
     async delete(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.deleteUseCase.execute(id);
             res.status(204).send();
         } catch (error: any) {

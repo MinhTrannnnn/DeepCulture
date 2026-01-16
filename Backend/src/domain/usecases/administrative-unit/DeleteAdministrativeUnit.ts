@@ -3,7 +3,7 @@ import { AdministrativeUnitRepository } from '../../repositories/AdministrativeU
 export class DeleteAdministrativeUnit {
     constructor(private repository: AdministrativeUnitRepository) { }
 
-    async execute(id: number): Promise<void> {
+    async execute(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 }

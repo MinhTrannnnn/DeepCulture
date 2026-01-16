@@ -25,7 +25,7 @@ export class DeityController {
 
     async getById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const deity = await this.getUseCase.execute(id);
             if (!deity) {
                 return res.status(404).json({ error: 'Not found' });
@@ -47,7 +47,7 @@ export class DeityController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const deity = await this.updateUseCase.execute(id, req.body);
             res.json(deity);
         } catch (error: any) {
@@ -57,7 +57,7 @@ export class DeityController {
 
     async delete(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.deleteUseCase.execute(id);
             res.status(204).send();
         } catch (error: any) {

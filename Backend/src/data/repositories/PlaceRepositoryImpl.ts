@@ -6,24 +6,26 @@ import { PlaceRepository } from '../../domain/repositories/PlaceRepository';
 export class PlaceRepositoryImpl implements PlaceRepository {
     private repository = AppDataSource.getRepository(PlaceModel);
 
-    async create(place: Place): Promise<Place> {
+    async create(place: Omit<Place, 'id' | 'createdAt' | 'updatedAt'>): Promise<Place> {
         const model = this.repository.create({
             name: place.name,
+            common_name: place.commonName,
+            type: place.type,
             address: place.address,
-            administrative_unit_id: place.administrativeUnitId,
-            latitude: place.latitude,
             longitude: place.longitude,
+            latitude: place.latitude,
+            established_year: place.establishedYear,
+            land_area: place.landArea,
+            status: place.status,
             description: place.description,
-            historical_significance: place.historicalSignificance,
-            visiting_hours: place.visitingHours,
-            entry_fee: place.entryFee,
-            contact_info: place.contactInfo
+            history: place.history,
+            administrative_unit_id: place.administrativeUnitId
         });
         const saved = await this.repository.save(model);
         return this.toEntity(saved);
     }
 
-    async findById(id: number): Promise<Place | null> {
+    async findById(id: string): Promise<Place | null> {
         const model = await this.repository.findOne({ where: { id } });
         return model ? this.toEntity(model) : null;
     }
@@ -33,32 +35,34 @@ export class PlaceRepositoryImpl implements PlaceRepository {
         return models.map(m => this.toEntity(m));
     }
 
-    async findByAdministrativeUnit(administrativeUnitId: number): Promise<Place[]> {
+    async findByAdministrativeUnit(administrativeUnitId: string): Promise<Place[]> {
         const models = await this.repository.find({
             where: { administrative_unit_id: administrativeUnitId }
         });
         return models.map(m => this.toEntity(m));
     }
 
-    async update(id: number, data: Partial<Place>): Promise<Place> {
+    async update(id: string, data: Partial<Place>): Promise<Place> {
         await this.repository.update(id, {
             name: data.name,
+            common_name: data.commonName,
+            type: data.type,
             address: data.address,
-            administrative_unit_id: data.administrativeUnitId,
-            latitude: data.latitude,
             longitude: data.longitude,
+            latitude: data.latitude,
+            established_year: data.establishedYear,
+            land_area: data.landArea,
+            status: data.status,
             description: data.description,
-            historical_significance: data.historicalSignificance,
-            visiting_hours: data.visitingHours,
-            entry_fee: data.entryFee,
-            contact_info: data.contactInfo
+            history: data.history,
+            administrative_unit_id: data.administrativeUnitId
         });
         const updated = await this.repository.findOne({ where: { id } });
         if (!updated) throw new Error('Not found');
         return this.toEntity(updated);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 
@@ -66,15 +70,17 @@ export class PlaceRepositoryImpl implements PlaceRepository {
         return {
             id: model.id,
             name: model.name,
+            commonName: model.common_name,
+            type: model.type,
             address: model.address,
-            administrativeUnitId: model.administrative_unit_id,
-            latitude: Number(model.latitude),
-            longitude: Number(model.longitude),
+            longitude: model.longitude ? Number(model.longitude) : undefined,
+            latitude: model.latitude ? Number(model.latitude) : undefined,
+            establishedYear: model.established_year,
+            landArea: model.land_area,
+            status: model.status,
             description: model.description,
-            historicalSignificance: model.historical_significance,
-            visitingHours: model.visiting_hours,
-            entryFee: Number(model.entry_fee),
-            contactInfo: model.contact_info,
+            history: model.history,
+            administrativeUnitId: model.administrative_unit_id,
             createdAt: model.created_at,
             updatedAt: model.updated_at
         };

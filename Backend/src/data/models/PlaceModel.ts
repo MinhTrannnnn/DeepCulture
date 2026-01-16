@@ -4,48 +4,53 @@ import { AdministrativeUnitModel } from './AdministrativeUnitModel';
 @Entity('place')
 @Index(['name'])
 @Index(['administrative_unit_id'])
-@Index(['latitude', 'longitude'])
 export class PlaceModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column({ length: 255 })
-    name!: string;
-
-    @Column({ length: 500 })
-    address!: string;
-
-    @Column({ name: 'administrative_unit_id' })
-    administrative_unit_id!: number;
-
-    @ManyToOne(() => AdministrativeUnitModel)
-    @JoinColumn({ name: 'administrative_unit_id' })
-    administrativeUnit!: AdministrativeUnitModel;
-
-    @Column({ type: 'decimal', precision: 10, scale: 7 })
-    latitude!: number;
-
-    @Column({ type: 'decimal', precision: 10, scale: 7 })
-    longitude!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: 'text' })
-    description!: string;
+    name!: string;
 
-    @Column({ type: 'text', name: 'historical_significance' })
-    historical_significance!: string;
+    @Column({ type: 'text', nullable: true })
+    common_name?: string;
 
-    @Column({ length: 255, name: 'visiting_hours', nullable: true })
-    visiting_hours!: string;
+    @Column({ type: 'text', nullable: true })
+    type?: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2, name: 'entry_fee', nullable: true })
-    entry_fee!: number;
+    @Column({ type: 'text', nullable: true })
+    address?: string;
 
-    @Column({ length: 500, name: 'contact_info', nullable: true })
-    contact_info!: string;
+    @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+    longitude?: number;
 
-    @CreateDateColumn()
+    @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+    latitude?: number;
+
+    @Column({ type: 'integer', nullable: true })
+    established_year?: number;
+
+    @Column({ type: 'integer', nullable: true })
+    land_area?: number;
+
+    @Column({ type: 'text', nullable: true })
+    status?: string;
+
+    @Column({ type: 'text', nullable: true })
+    description?: string;
+
+    @Column({ type: 'text', nullable: true })
+    history?: string;
+
+    @Column({ type: 'uuid', nullable: true })
+    administrative_unit_id?: string;
+
+    @ManyToOne(() => AdministrativeUnitModel, { nullable: true })
+    @JoinColumn({ name: 'administrative_unit_id' })
+    administrativeUnit?: AdministrativeUnitModel;
+
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

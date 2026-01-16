@@ -1,30 +1,26 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('dynasty')
-@Index(['name'], { unique: true })
-@Index(['start_year'])
+@Index(['name'])
 export class DynastyModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column({ length: 255, unique: true })
-    name!: string;
-
-    @Column({ type: 'integer', name: 'start_year' })
-    start_year!: number;
-
-    @Column({ type: 'integer', name: 'end_year', nullable: true })
-    end_year!: number | null;
-
-    @Column({ length: 255 })
-    capital!: string;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: 'text' })
-    description!: string;
+    name!: string;
 
-    @CreateDateColumn()
+    @Column({ type: 'integer', nullable: true })
+    start_year?: number;
+
+    @Column({ type: 'integer', nullable: true })
+    end_year?: number;
+
+    @Column({ type: 'text', nullable: true })
+    description?: string;
+
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

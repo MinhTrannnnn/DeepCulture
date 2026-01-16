@@ -1,10 +1,9 @@
 export interface Dynasty {
-    id: number;
+    id: string;
     name: string;
-    startYear: number;
-    endYear: number | null;
-    capital: string;
-    description: string;
+    startYear?: number;
+    endYear?: number;
+    description?: string;
     createdAt: Date;
     updatedAt: Date;
 }

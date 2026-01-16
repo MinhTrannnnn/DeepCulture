@@ -6,7 +6,7 @@ import { DeityRepository } from '../../domain/repositories/DeityRepository';
 export class DeityRepositoryImpl implements DeityRepository {
     private repository = AppDataSource.getRepository(DeityModel);
 
-    async create(deity: Deity): Promise<Deity> {
+    async create(deity: Omit<Deity, 'id' | 'createdAt' | 'updatedAt'>): Promise<Deity> {
         const model = this.repository.create({
             name: deity.name,
             type: deity.type,
@@ -17,7 +17,7 @@ export class DeityRepositoryImpl implements DeityRepository {
         return this.toEntity(saved);
     }
 
-    async findById(id: number): Promise<Deity | null> {
+    async findById(id: string): Promise<Deity | null> {
         const model = await this.repository.findOne({ where: { id } });
         return model ? this.toEntity(model) : null;
     }
@@ -27,7 +27,7 @@ export class DeityRepositoryImpl implements DeityRepository {
         return models.map(m => this.toEntity(m));
     }
 
-    async update(id: number, data: Partial<Deity>): Promise<Deity> {
+    async update(id: string, data: Partial<Deity>): Promise<Deity> {
         await this.repository.update(id, {
             name: data.name,
             type: data.type,
@@ -39,7 +39,7 @@ export class DeityRepositoryImpl implements DeityRepository {
         return this.toEntity(updated);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 

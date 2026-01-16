@@ -4,7 +4,7 @@ import { PlaceRepository } from '../../repositories/PlaceRepository';
 export class ListPlaces {
     constructor(private repository: PlaceRepository) { }
 
-    async execute(administrativeUnitId?: number): Promise<Place[]> {
+    async execute(administrativeUnitId?: string): Promise<Place[]> {
         if (administrativeUnitId) {
             return await this.repository.findByAdministrativeUnit(administrativeUnitId);
         }

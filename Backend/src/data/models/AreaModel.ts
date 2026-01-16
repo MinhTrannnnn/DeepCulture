@@ -6,28 +6,31 @@ import { PlaceModel } from './PlaceModel';
 @Index(['place_id'])
 @Index(['area_type'])
 export class AreaModel {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column({ length: 255 })
-    name!: string;
-
-    @Column({ name: 'place_id' })
-    place_id!: number;
-
-    @ManyToOne(() => PlaceModel)
-    @JoinColumn({ name: 'place_id' })
-    place!: PlaceModel;
-
-    @Column({ length: 100, name: 'area_type' })
-    area_type!: string;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: 'text' })
-    description!: string;
+    name!: string;
 
-    @CreateDateColumn()
+    @Column({ type: 'text', nullable: true })
+    area_type?: string;
+
+    @Column({ type: 'text', nullable: true })
+    function?: string;
+
+    @Column({ type: 'text', nullable: true })
+    description?: string;
+
+    @Column({ type: 'uuid', nullable: true })
+    place_id?: string;
+
+    @ManyToOne(() => PlaceModel, { nullable: true })
+    @JoinColumn({ name: 'place_id' })
+    place?: PlaceModel;
+
+    @CreateDateColumn({ type: 'timestamptz' })
     created_at!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updated_at!: Date;
 }

@@ -4,7 +4,7 @@ import { AdministrativeUnitRepository } from '../../repositories/AdministrativeU
 export class GetAdministrativeUnit {
     constructor(private repository: AdministrativeUnitRepository) { }
 
-    async execute(id: number): Promise<AdministrativeUnit | null> {
+    async execute(id: string): Promise<AdministrativeUnit | null> {
         return await this.repository.findById(id);
     }
 }

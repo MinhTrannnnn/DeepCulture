@@ -1,5 +1,5 @@
 export interface AdministrativeUnit {
-    id: number;
+    id: string;
     name: string;
     level: string;
     createdAt: Date;

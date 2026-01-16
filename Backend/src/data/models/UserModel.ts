@@ -1,16 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('users') // Tên bảng trong PostgreSQL
+@Entity('users')
 export class UserModel {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ unique: true })
+    @Column({ type: 'text', unique: true })
     username!: string;
 
-    @Column({ unique: true })
+    @Column({ type: 'text', unique: true })
     email!: string;
 
-    @Column()
+    @Column({ type: 'text' })
     password!: string;
+
+    @Column({ type: 'text' })
+    role!: string;
+
+    @CreateDateColumn({ type: 'timestamptz' })
+    created_at!: Date;
+
+    @UpdateDateColumn({ type: 'timestamptz' })
+    updated_at!: Date;
 }

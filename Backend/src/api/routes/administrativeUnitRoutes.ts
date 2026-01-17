@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AdministrativeUnitController } from '../controllers/AdministrativeUnitController';
 import { authMiddleware } from '../middlewares/authenticate';
-import { roleMiddleware } from  '../middlewares/authorize';
+import { roleMiddleware } from '../middlewares/authorize';
 
 export const createAdministrativeUnitRoutes = (controller: AdministrativeUnitController) => {
     const router = Router();
@@ -39,5 +39,5 @@ export const createAdministrativeUnitRoutes = (controller: AdministrativeUnitCon
         (req, res) => controller.delete(req, res)
     );
 
-  return router;
+    return router;
 };

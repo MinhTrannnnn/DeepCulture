@@ -1,4 +1,5 @@
 import { User } from '../../entities/User';
+import { PasswordHasher } from '../../repositories/PasswordHasherRepository';
 import { UserRepository } from '../../repositories/UserRepository';
 
 export interface RegisterUserDTO {
@@ -9,7 +10,10 @@ export interface RegisterUserDTO {
 }
 
 export class RegisterUser {
-    constructor(private repository: UserRepository) { }
+    constructor(
+        private userRepo: UserRepository,
+        private passwordHasher: PasswordHasher
+    ) {}
 
     async execute(data: RegisterUserDTO): Promise<User> {
         // Validation
@@ -18,22 +22,25 @@ export class RegisterUser {
         }
 
         // Check if user already exists
-        const existingUser = await this.repository.findByUsername(data.username);
+        const existingUser = await this.userRepo.findByUsername(data.username);
         if (existingUser) {
             throw new Error('Username already exists');
         }
 
-        const existingEmail = await this.repository.findByEmail(data.email);
+        const existingEmail = await this.userRepo.findByEmail(data.email);
         if (existingEmail) {
             throw new Error('Email already exists');
         }
 
+        // Hash password
+        const hashedPassword = await this.passwordHasher.hash(data.password);
+
         // Create user
-        return await this.repository.create({
+        return await this.userRepo.create({
             username: data.username,
             email: data.email,
-            password: data.password, // TODO: Hash password in production!
-            role: data.role || 'user'
+            password: hashedPassword,
+            role: data.role || 'VIEWER'
         });
     }
 }

@@ -1,14 +1,43 @@
 import { Router } from 'express';
 import { AdministrativeUnitController } from '../controllers/AdministrativeUnitController';
+import { authMiddleware } from '../middlewares/authenticate';
+import { roleMiddleware } from  '../middlewares/authorize';
 
 export const createAdministrativeUnitRoutes = (controller: AdministrativeUnitController) => {
     const router = Router();
 
-    router.post('/', (req, res) => controller.create(req, res));
-    router.get('/:id', (req, res) => controller.getById(req, res));
-    router.get('/', (req, res) => controller.list(req, res));
-    router.put('/:id', (req, res) => controller.update(req, res));
-    router.delete('/:id', (req, res) => controller.delete(req, res));
+    router.post(
+        '/',
+        authMiddleware,
+        roleMiddleware(['admin', 'editor']),
+        (req, res) => controller.create(req, res)
+    );
 
-    return router;
+    router.get(
+        '/',
+        authMiddleware,
+        (req, res) => controller.list(req, res)
+    );
+
+    router.get(
+        '/:id',
+        authMiddleware,
+        (req, res) => controller.getById(req, res)
+    );
+
+    router.put(
+        '/:id',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        (req, res) => controller.update(req, res)
+    );
+
+    router.delete(
+        '/:id',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        (req, res) => controller.delete(req, res)
+    );
+
+  return router;
 };

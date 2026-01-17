@@ -45,7 +45,7 @@ app.use(express.json());
 // Request logging middleware
 app.use((req, res, next) => {
     const timestamp = new Date().toLocaleTimeString('vi-VN');
-    console.log(`📡 [${timestamp}] ${req.method} ${req.originalUrl}`);
+    console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
     next();
 });
 
@@ -72,6 +72,6 @@ const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {
     app.listen(PORT, () => {
-        console.log(`🚀 Server running on port ${PORT}`);
+        console.log(`Server running on port ${PORT}`);
     });
 });

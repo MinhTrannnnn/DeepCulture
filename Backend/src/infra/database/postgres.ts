@@ -17,6 +17,7 @@ import { PlaceDynastyModel } from '../../data/models/PlaceDynastyModel';
 import { PlaceIntangibleModel } from '../../data/models/PlaceIntangibleModel';
 import { AreaArchitectureModel } from '../../data/models/AreaArchitectureModel';
 import { PersonDynastyModel } from '../../data/models/PersonDynastyModel';
+import { RefreshTokenSessionModel } from '../../data/models/RefreshTokenSessionModel';
 
 // Load environment variables
 dotenv.config();
@@ -28,14 +29,14 @@ export const AppDataSource = new DataSource({
         : {
             host: process.env.DB_HOST,
             port: parseInt(process.env.DB_PORT || '5432'),
-            username: process.env.DB_USER,
+            username: process.env.DB_USERNAME,
             password: String(process.env.DB_PASSWORD),
             database: process.env.DB_NAME,
         }
     ),
-    ssl: {
-        rejectUnauthorized: false
-    },
+    // ssl: {
+    //     rejectUnauthorized: false
+    // },
     synchronize: false,
     logging: process.env.NODE_ENV === 'development',
     entities: [
@@ -54,7 +55,8 @@ export const AppDataSource = new DataSource({
         PlaceDynastyModel,
         PlaceIntangibleModel,
         AreaArchitectureModel,
-        PersonDynastyModel
+        PersonDynastyModel,
+        RefreshTokenSessionModel
     ],
     migrations: ['src/infra/database/migrations/*.ts'],
     migrationsTableName: 'migrations_history'

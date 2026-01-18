@@ -20,6 +20,7 @@ import { createPlaceDynastyRoutes } from './api/routes/placeDynastyRoutes';
 import { createPlaceIntangibleRoutes } from './api/routes/placeIntangibleRoutes';
 import { createAreaArchitectureRoutes } from './api/routes/areaArchitectureRoutes';
 import { createPersonDynastyRoutes } from './api/routes/personDynastyRoutes';
+import { createMediaRoutes } from './api/routes/mediaRoutes';
 
 // Import DI Modules
 import { AuthModule } from './core/di/modules/AuthModule';
@@ -38,6 +39,7 @@ import { PlaceDynastyModule } from './core/di/modules/PlaceDynastyModule';
 import { PlaceIntangibleModule } from './core/di/modules/PlaceIntangibleModule';
 import { AreaArchitectureModule } from './core/di/modules/AreaArchitectureModule';
 import { PersonDynastyModule } from './core/di/modules/PersonDynastyModule';
+import { MediaModule } from './core/di/modules/MediaModule';
 
 const app = express();
 app.use(express.json());
@@ -66,6 +68,7 @@ app.use('/api', createPlaceDynastyRoutes(PlaceDynastyModule.controller));
 app.use('/api', createPlaceIntangibleRoutes(PlaceIntangibleModule.controller));
 app.use('/api', createAreaArchitectureRoutes(AreaArchitectureModule.controller));
 app.use('/api', createPersonDynastyRoutes(PersonDynastyModule.controller));
+app.use('/api/media', createMediaRoutes(MediaModule.controller));
 
 // Start server
 const PORT = process.env.PORT || 3000;

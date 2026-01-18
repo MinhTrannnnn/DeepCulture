@@ -17,6 +17,8 @@ import { PlaceDynastyModel } from '../../data/models/PlaceDynastyModel';
 import { PlaceIntangibleModel } from '../../data/models/PlaceIntangibleModel';
 import { AreaArchitectureModel } from '../../data/models/AreaArchitectureModel';
 import { PersonDynastyModel } from '../../data/models/PersonDynastyModel';
+import { MediaModel } from '../../data/models/MediaModel';
+import { MediaRelationModel } from '../../data/models/MediaRelationModel';
 
 // Load environment variables
 dotenv.config();
@@ -54,7 +56,9 @@ export const AppDataSource = new DataSource({
         PlaceDynastyModel,
         PlaceIntangibleModel,
         AreaArchitectureModel,
-        PersonDynastyModel
+        PersonDynastyModel,
+        MediaModel,
+        MediaRelationModel
     ],
     migrations: ['src/infra/database/migrations/*.ts'],
     migrationsTableName: 'migrations_history'

@@ -8,7 +8,6 @@ export interface CreateArchitectureDTO {
     technique?: string;
     pattern?: string;
     description?: string;
-    imageUrl?: string;
     year?: number;
 }
 

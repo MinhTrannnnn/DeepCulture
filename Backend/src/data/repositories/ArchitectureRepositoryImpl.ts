@@ -14,7 +14,6 @@ export class ArchitectureRepositoryImpl implements ArchitectureRepository {
             technique: architecture.technique,
             pattern: architecture.pattern,
             description: architecture.description,
-            image_url: architecture.imageUrl,
             year: architecture.year
         });
         const saved = await this.repository.save(model);
@@ -44,7 +43,6 @@ export class ArchitectureRepositoryImpl implements ArchitectureRepository {
             technique: data.technique,
             pattern: data.pattern,
             description: data.description,
-            image_url: data.imageUrl,
             year: data.year
         });
         const updated = await this.repository.findOne({ where: { id } });
@@ -65,7 +63,6 @@ export class ArchitectureRepositoryImpl implements ArchitectureRepository {
             technique: model.technique,
             pattern: model.pattern,
             description: model.description,
-            imageUrl: model.image_url,
             year: model.year,
             createdAt: model.created_at,
             updatedAt: model.updated_at

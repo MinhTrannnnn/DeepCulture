@@ -23,9 +23,6 @@ export class ArchitectureModel {
     @Column({ type: 'text', nullable: true })
     description?: string;
 
-    @Column({ type: 'text', name: 'image_url', nullable: true })
-    image_url?: string;
-
     @Column({ type: 'integer', nullable: true })
     year?: number;
 

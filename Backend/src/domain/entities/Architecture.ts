@@ -6,7 +6,6 @@ export interface Architecture {
     technique?: string;
     pattern?: string;
     description?: string;
-    imageUrl?: string;
     year?: number;
     createdAt?: Date;
     updatedAt?: Date;

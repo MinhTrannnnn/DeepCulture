@@ -12,7 +12,6 @@ export class HanNomInscriptionRepositoryImpl implements HanNomInscriptionReposit
             location: inscription.location,
             transcription: inscription.transcription,
             translation: inscription.translation,
-            image_url: inscription.imageUrl,
             year: inscription.year,
             condition: inscription.condition,
             area_id: inscription.areaId
@@ -42,7 +41,6 @@ export class HanNomInscriptionRepositoryImpl implements HanNomInscriptionReposit
             location: data.location,
             transcription: data.transcription,
             translation: data.translation,
-            image_url: data.imageUrl,
             year: data.year,
             condition: data.condition,
             area_id: data.areaId
@@ -63,7 +61,6 @@ export class HanNomInscriptionRepositoryImpl implements HanNomInscriptionReposit
             location: model.location,
             transcription: model.transcription,
             translation: model.translation,
-            imageUrl: model.image_url,
             year: model.year,
             condition: model.condition,
             areaId: model.area_id,

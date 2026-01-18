@@ -4,7 +4,6 @@ export interface HanNomInscription {
     location?: string;
     transcription?: string;
     translation?: string;
-    imageUrl?: string;
     year?: number;
     condition?: string;
     areaId?: string;

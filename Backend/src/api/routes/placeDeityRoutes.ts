@@ -10,7 +10,7 @@ export const createPlaceDeityRoutes = (controller: PlaceDeityController) => {
     router.post(
         '/places/:placeId/deities', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.addDeityToPlace(req, res)
     );
     router.get(
@@ -21,13 +21,13 @@ export const createPlaceDeityRoutes = (controller: PlaceDeityController) => {
     router.put(
         '/places/:placeId/deities/:deityId', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.updatePlaceDeity(req, res)
     );
     router.delete(
         '/places/:placeId/deities/:deityId', 
         authMiddleware, 
-        roleMiddleware(['admin']), 
+        roleMiddleware(['ADMIN']), 
         (req, res) => controller.removeDeityFromPlace(req, res)
     );
 

@@ -8,7 +8,7 @@ export function createPlaceIntangibleRoutes(controller: PlaceIntangibleControlle
     router.post(
         '/places/:placeId/intangible-heritages', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.addIntangibleToPlace(req, res)
     );
     router.get(
@@ -19,7 +19,7 @@ export function createPlaceIntangibleRoutes(controller: PlaceIntangibleControlle
     router.delete(
         '/places/:placeId/intangible-heritages/:intangibleHeritageId', 
         authMiddleware, 
-        roleMiddleware(['admin']), 
+        roleMiddleware(['ADMIN']), 
         (req, res) => controller.removeIntangibleFromPlace(req, res)
     );
     router.get(

@@ -8,7 +8,7 @@ export function createPersonDynastyRoutes(controller: PersonDynastyController): 
     router.post(
         '/persons/:personId/dynasties', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.addDynastyToPerson(req, res)
     );
     router.get(
@@ -18,12 +18,12 @@ export function createPersonDynastyRoutes(controller: PersonDynastyController): 
     );
     router.put(
         '/persons/:personId/dynasties/:dynastyId', 
-        authMiddleware, roleMiddleware(['admin', 'editor']), 
+        authMiddleware, roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.updatePersonDynasty(req, res)
     );
     router.delete(
         '/persons/:personId/dynasties/:dynastyId', 
-        authMiddleware, roleMiddleware(['admin']), 
+        authMiddleware, roleMiddleware(['ADMIN']), 
         (req, res) => controller.removeDynastyFromPerson(req, res)
     );
     router.get(

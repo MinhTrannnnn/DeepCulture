@@ -10,7 +10,7 @@ export function createPlaceDynastyRoutes(controller: PlaceDynastyController): Ro
     router.post(
         '/places/:placeId/dynasties', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.addDynastyToPlace(req, res)
     );
     router.get(
@@ -21,13 +21,13 @@ export function createPlaceDynastyRoutes(controller: PlaceDynastyController): Ro
     router.put(
         '/places/:placeId/dynasties/:dynastyId', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.updatePlaceDynasty(req, res)
     );
     router.delete(
         '/places/:placeId/dynasties/:dynastyId', 
         authMiddleware, 
-        roleMiddleware(['admin']), 
+        roleMiddleware(['ADMIN']), 
         (req, res) => controller.removeDynastyFromPlace(req, res)
     );
 

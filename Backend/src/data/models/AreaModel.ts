@@ -21,7 +21,7 @@ export class AreaModel {
     @Column({ type: 'text', nullable: true })
     description?: string;
 
-    @Column({ type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: false })
     place_id?: string;
 
     @ManyToOne(() => PlaceModel, { nullable: true })

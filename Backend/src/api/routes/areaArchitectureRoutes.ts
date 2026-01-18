@@ -8,7 +8,7 @@ export function createAreaArchitectureRoutes(controller: AreaArchitectureControl
     router.post(
         '/areas/:areaId/architectures', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.addArchitectureToArea(req, res)
     );
     router.get(
@@ -19,13 +19,13 @@ export function createAreaArchitectureRoutes(controller: AreaArchitectureControl
     router.put(
         '/areas/:areaId/architectures/:architectureId', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.updateAreaArchitecture(req, res)
     );
     router.delete(
         '/areas/:areaId/architectures/:architectureId', 
         authMiddleware, 
-        roleMiddleware(['admin']), 
+        roleMiddleware(['ADMIN']), 
         (req, res) => controller.removeArchitectureFromArea(req, res)
     );
     return router;

@@ -8,7 +8,7 @@ export function createIntangibleHeritageRoutes(controller: IntangibleHeritageCon
     router.post(
         '/', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.create(req, res)
     );
     router.get(
@@ -24,13 +24,13 @@ export function createIntangibleHeritageRoutes(controller: IntangibleHeritageCon
     router.put(
         '/:id', 
         authMiddleware, 
-        roleMiddleware(['admin', 'editor']), 
+        roleMiddleware(['ADMIN', 'EDITOR']), 
         (req, res) => controller.update(req, res)
     );
     router.delete(
         '/:id', 
         authMiddleware, 
-        roleMiddleware(['admin']), 
+        roleMiddleware(['ADMIN']), 
         (req, res) => controller.delete(req, res)
     );
     return router;

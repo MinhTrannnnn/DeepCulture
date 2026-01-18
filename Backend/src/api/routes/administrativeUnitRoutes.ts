@@ -9,7 +9,7 @@ export const createAdministrativeUnitRoutes = (controller: AdministrativeUnitCon
     router.post(
         '/',
         authMiddleware,
-        roleMiddleware(['admin', 'editor']),
+        roleMiddleware(['ADMIN', 'EDITOR']),
         (req, res) => controller.create(req, res)
     );
 
@@ -28,14 +28,14 @@ export const createAdministrativeUnitRoutes = (controller: AdministrativeUnitCon
     router.put(
         '/:id',
         authMiddleware,
-        roleMiddleware(['admin']),
+        roleMiddleware(['ADMIN', 'EDITOR']),
         (req, res) => controller.update(req, res)
     );
 
     router.delete(
         '/:id',
         authMiddleware,
-        roleMiddleware(['admin']),
+        roleMiddleware(['ADMIN']),
         (req, res) => controller.delete(req, res)
     );
 
